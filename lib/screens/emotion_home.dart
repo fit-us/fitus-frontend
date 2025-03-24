@@ -2,7 +2,6 @@ import 'package:fapp/emotion/emotion_summary_container.dart';
 import 'package:fapp/features/emotion-calendar/ui/emotion-calendar-button.dart';
 import 'package:fapp/mock/emotion_summary.dart';
 import 'package:fapp/pages/emotion-calendar-page.dart';
-import 'package:fapp/widgets/link-button.dart';
 import 'package:flutter/material.dart';
 import 'package:fapp/biodashboard/biodashboard.dart';
 
