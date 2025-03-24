@@ -60,35 +60,7 @@ dev_dependencies:
 # The following section is specific to Flutter packages.
 flutter:
     assets:
-        - assets/0.png
-        - assets/1.png
-        - assets/2.png
-        - assets/3.png
-        - assets/4.png
-        - assets/5.png
-        - assets/6.png
-        - assets/no_emotion.png
-        - assets/bgImage.png
-        - assets/small/small_veryUnpleasant.png
-        - assets/small/small_unpleasant.png
-        - assets/small/small_littleUnpleasant.png
-        - assets/small/small_normal.png
-        - assets/small/small_littlePleasant.png
-        - assets/small/small_pleasant.png
-        - assets/small/small_veryPleasant.png
-        - assets/bioIcon/lung.png
-        - assets/bioIcon/oxygen.png
-        - assets/bioIcon/heart.png
-        - assets/bioIcon/person.png
-        - assets/bioIcon/heartlate.png
-        - assets/tabicon/home_outline.svg
-        - assets/tabicon/home_inline.svg
-        - assets/tabicon/cbt.svg
-        - assets/tabicon/cbt_inline.svg
-        - assets/tabicon/per.svg
-        - assets/tabicon/per_inline.svg
-        - assets/tabicon/report.svg
-        - assets/tabicon/report_inline.svg
+        - assets/
     # The following line ensures that the Material Icons font is
     # included with your application, so that you can use the icons in
     # the material Icons class.
