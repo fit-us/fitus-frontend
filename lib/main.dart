@@ -1,6 +1,7 @@
 import 'package:fapp/app_state.dart';
 import 'package:fapp/bottom_tab.dart';
 import 'package:fapp/bottom_tab_route_observer.dart';
+import 'package:fapp/pages/emotion-calendar-page.dart';
 import 'package:flutter/material.dart';
 import 'package:fapp/record/record_context.dart';
 import 'package:provider/provider.dart';
@@ -35,6 +36,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(primarySwatch: Colors.blue),
       debugShowCheckedModeBanner: false,
       home: const Home(),
+      routes: {"/emotion-calendar": (context) => EmotionCalendarPage()},
     );
   }
 }
