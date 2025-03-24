@@ -27,11 +27,9 @@ class _RecordSelectDescriptionState extends State<RecordSelectDescription> {
   String _description = "";
   bool _localeInitialized = false;
 
-  // TextField controllers
   late TextEditingController _placeController;
   late TextEditingController _descriptionController;
 
-  // 스타일 상수 정의
   static const TextStyle _titleStyle = TextStyle(fontSize: 16.0);
   static const TextStyle _textFieldLabelStyle = TextStyle(
     fontSize: 14.0,
@@ -129,39 +127,41 @@ class _RecordSelectDescriptionState extends State<RecordSelectDescription> {
       );
     }
 
-    return Stack(
-      children: [
-        Positioned.fill(
-          child: DecoratedBox(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: paletteItem.backgroundColor,
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
+    return Material(
+      child: Stack(
+        children: [
+          Positioned.fill(
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: paletteItem.backgroundColor,
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
               ),
             ),
           ),
-        ),
-        Positioned.fill(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Column(
-              children: [
-                _buildEmotionSection(paletteItem, emotionText, expressions),
-                _buildInputSection(context),
-                Padding(
-                  padding: const EdgeInsets.only(top: 16.0, bottom: 16.0),
-                  child: RecordNextButton(
-                    text: "기록하기",
-                    onPressed: handleNext,
-                    buttonColor: paletteItem.buttonColor,
+          Positioned.fill(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Column(
+                children: [
+                  _buildEmotionSection(paletteItem, emotionText, expressions),
+                  _buildInputSection(context),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 16.0, bottom: 16.0),
+                    child: RecordNextButton(
+                      text: "기록하기",
+                      onPressed: handleNext,
+                      buttonColor: paletteItem.buttonColor,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 

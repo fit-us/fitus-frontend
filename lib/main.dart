@@ -1,12 +1,25 @@
+import 'package:fapp/app_state.dart';
 import 'package:fapp/bottom_tab.dart';
+import 'package:fapp/bottom_tab_route_observer.dart';
 import 'package:flutter/material.dart';
 import 'package:fapp/record/record_context.dart';
 import 'package:provider/provider.dart';
 
 void main() {
+  final appState = AppState();
+  final routeObserver = BottomTabRouteObserver(
+    onShowBottomTab: (show) {
+      appState.setBottomTabVisibility(show);
+    },
+  );
+
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => RecordContext(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(value: appState),
+        ChangeNotifierProvider(create: (_) => RecordContext()),
+        Provider.value(value: routeObserver),
+      ],
       child: const MyApp(),
     ),
   );
@@ -18,7 +31,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'BioScore Demo',
+      title: 'Fitus',
       theme: ThemeData(primarySwatch: Colors.blue),
       debugShowCheckedModeBanner: false,
       home: const Home(),

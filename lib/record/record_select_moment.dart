@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'dart:io';
+import 'package:fapp/bottom_tab_route_observer.dart';
 import 'package:fapp/record/components/moment/record_moment_header.dart';
 import 'package:fapp/record/components/record_app_bar_ios.dart';
 import 'package:fapp/record/components/record_next_button.dart';
@@ -18,8 +19,29 @@ class RecordSelectMoment extends StatefulWidget {
   State<RecordSelectMoment> createState() => _RecordSelectMomentState();
 }
 
-class _RecordSelectMomentState extends State<RecordSelectMoment> {
+class _RecordSelectMomentState extends State<RecordSelectMoment>
+    with RouteAware {
   String? _selectedMoment;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final routeObserver = Provider.of<BottomTabRouteObserver>(
+      context,
+      listen: false,
+    );
+    routeObserver.subscribe(this, ModalRoute.of(context) as PageRoute);
+  }
+
+  @override
+  void dispose() {
+    final routeObserver = Provider.of<BottomTabRouteObserver>(
+      context,
+      listen: false,
+    );
+    routeObserver.unsubscribe(this);
+    super.dispose();
+  }
 
   void _handleSelect(String moment) {
     setState(() {
@@ -64,7 +86,7 @@ class _RecordSelectMomentState extends State<RecordSelectMoment> {
             CupertinoDialogAction(
               child: const Text("확인"),
               onPressed: () {
-                log("Alert닫");
+                log("Alert닫힘");
                 Navigator.of(context).pop();
               },
             ),
@@ -79,7 +101,10 @@ class _RecordSelectMomentState extends State<RecordSelectMoment> {
       log('Navigating to /screens/form-select-emotion');
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => SelectEmotionScreen()),
+        MaterialPageRoute(
+          builder: (context) => SelectEmotionScreen(),
+          settings: const RouteSettings(name: '/record-select-emotion'),
+        ),
       );
     } else {
       _showSelectionAlert();

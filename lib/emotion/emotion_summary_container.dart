@@ -36,6 +36,8 @@ class EmotionSummaryContainer extends StatelessWidget {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => const RecordSelectMoment(),
+                  settings: const RouteSettings(name: '/record-select-moment'),
+                  barrierDismissible: true,
                 ),
               );
             },
