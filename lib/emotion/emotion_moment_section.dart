@@ -1,11 +1,12 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:fapp/app_state.dart';
 import 'package:fapp/emotion/emotion_no_summary_item.dart';
 import 'package:fapp/emotion/emotion_summary_day_box.dart';
 import 'package:fapp/emotion/emtion_all_items.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MomentEmotionSection extends StatefulWidget {
@@ -59,13 +60,16 @@ class _MomentEmotionSectionState extends State<MomentEmotionSection> {
 
   void _handleShowAllEmotions(BuildContext context) {
     if (emotions != null) {
+      final appState = Provider.of<AppState>(context, listen: false);
+      appState.setBottomTabVisibility(false);
+
       showModalBottomSheet(
         context: context,
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
         builder:
-            (context) => Container(
-              height: MediaQuery.of(context).size.height * 0.85,
+            (modalContext) => Container(
+              height: MediaQuery.of(context).size.height * 0.75,
               decoration: const BoxDecoration(
                 color: Color(0xFFC9C4F2),
                 borderRadius: BorderRadius.only(
@@ -92,7 +96,9 @@ class _MomentEmotionSectionState extends State<MomentEmotionSection> {
                           ),
                         ),
                         GestureDetector(
-                          onTap: () => Navigator.of(context).pop(),
+                          onTap: () {
+                            Navigator.of(modalContext).pop();
+                          },
                           child: const Text(
                             '완료',
                             style: TextStyle(
@@ -107,10 +113,6 @@ class _MomentEmotionSectionState extends State<MomentEmotionSection> {
                   ),
                   Expanded(
                     child: ClipRRect(
-                      // borderRadius: const BorderRadius.only(
-                      //   topLeft: Radius.circular(20),
-                      //   topRight: Radius.circular(20),
-                      // ),
                       child: AllEmotionsModal(
                         emotions: emotions!,
                         date: widget.date,
@@ -125,7 +127,11 @@ class _MomentEmotionSectionState extends State<MomentEmotionSection> {
                 ],
               ),
             ),
-      );
+      ).then((_) {
+        if (mounted) {
+          appState.setBottomTabVisibility(true);
+        }
+      });
     }
   }
 
@@ -152,7 +158,6 @@ class _MomentEmotionSectionState extends State<MomentEmotionSection> {
             : const NoEmotionSummaryDayBox(),
         if (emotions != null && emotions!.isNotEmpty)
           GestureDetector(
-            // Positioned 대신 GestureDetector로 감싸고
             onTap: () => _handleShowAllEmotions(context),
             child: Container(
               decoration: const BoxDecoration(

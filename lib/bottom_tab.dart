@@ -141,18 +141,23 @@ class _BottomTabState extends State<BottomTab>
                   observers: [Provider.of<BottomTabRouteObserver>(context)],
                   onGenerateRoute: (routeSettings) {
                     WidgetBuilder builder;
+                    String routeName;
                     switch (index) {
                       case 0:
                         builder = (context) => HomeScreen();
+                        routeName = '/';
                         break;
                       case 1:
                         builder = (context) => const RecordSelectMoment();
+                        routeName = '/record-select-moment';
                         break;
                       case 2:
                         builder = (context) => const RecordSelectDescription();
+                        routeName = '/record-select-description';
                         break;
                       case 3:
                         builder = (context) => SettingProfileContainer();
+                        routeName = '/profile';
                         break;
                       default:
                         throw Exception('Invalid index: $index');
