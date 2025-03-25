@@ -31,12 +31,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final routeObserver = Provider.of<BottomTabRouteObserver>(
+      context,
+      listen: false,
+    );
     return MaterialApp(
       title: 'Fitus',
       theme: ThemeData(primarySwatch: Colors.blue),
       debugShowCheckedModeBanner: false,
       home: const BottomTab(),
       routes: {"/emotion-calendar": (context) => EmotionCalendarPage()},
+      navigatorObservers: [routeObserver],
       onGenerateRoute: (settings) {
         return null;
       },

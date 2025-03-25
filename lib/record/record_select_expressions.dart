@@ -40,6 +40,11 @@ class _EmotionExpressScreenState extends State<EmotionExpressScreen>
   }
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   void dispose() {
     final routeObserver = Provider.of<BottomTabRouteObserver>(
       context,

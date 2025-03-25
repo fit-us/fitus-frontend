@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:fapp/app_state.dart';
 import 'package:fapp/record/components/record_app_bar_android.dart';
 import 'package:fapp/record/components/record_app_bar_ios.dart';
 import 'package:fapp/screens/emotion_home.dart';
@@ -122,8 +123,15 @@ class _RecordSelectDescriptionState extends State<RecordSelectDescription> {
       submitEmotion();
       recordContext.setEmotion(0);
       recordContext.setMoment("");
+      Provider.of<AppState>(
+        context,
+        listen: false,
+      ).setBottomTabVisibility(true);
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => const HomeScreen()),
+        MaterialPageRoute(
+          builder: (context) => const HomeScreen(),
+          settings: const RouteSettings(name: '/'),
+        ),
       );
     }
 

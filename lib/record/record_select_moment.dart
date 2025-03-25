@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'dart:io';
+import 'package:fapp/app_state.dart';
 import 'package:fapp/bottom_tab_route_observer.dart';
 import 'package:fapp/record/components/moment/record_moment_header.dart';
 import 'package:fapp/record/components/record_app_bar_ios.dart';
@@ -22,24 +23,33 @@ class RecordSelectMoment extends StatefulWidget {
 class _RecordSelectMomentState extends State<RecordSelectMoment>
     with RouteAware {
   String? _selectedMoment;
+  BottomTabRouteObserver? _routeObserver;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<AppState>(
+        context,
+        listen: false,
+      ).setBottomTabVisibility(false);
+    });
+  }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final routeObserver = Provider.of<BottomTabRouteObserver>(
+    _routeObserver = Provider.of<BottomTabRouteObserver>(
       context,
       listen: false,
     );
-    routeObserver.subscribe(this, ModalRoute.of(context) as PageRoute);
+    _routeObserver?.subscribe(this, ModalRoute.of(context) as PageRoute);
   }
 
   @override
   void dispose() {
-    final routeObserver = Provider.of<BottomTabRouteObserver>(
-      context,
-      listen: false,
-    );
-    routeObserver.unsubscribe(this);
+    _routeObserver?.unsubscribe(this);
+    _routeObserver = null;
     super.dispose();
   }
 
@@ -120,7 +130,6 @@ class _RecordSelectMomentState extends State<RecordSelectMoment>
     final now = "${day.month}월 ${day.day}일 ${dayTransformer[day.weekday - 1]}";
     final nowTimes = "${day.hour}시${day.minute}분";
 
-    // 필요하다면 Provider를 통해 RecordContext에서 emotion 값을 가져와 Palette에 접근
     final recordContext = Provider.of<RecordContext>(context);
     final currentPalette = palette[recordContext.emotion];
 
