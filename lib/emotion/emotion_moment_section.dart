@@ -37,7 +37,6 @@ class _MomentEmotionSectionState extends State<MomentEmotionSection> {
   @override
   void initState() {
     super.initState();
-    log('MomentEmotionSection initState - widget.date: ${widget.date}');
     _loadEmotionsForDate();
   }
 
@@ -137,7 +136,6 @@ class _MomentEmotionSectionState extends State<MomentEmotionSection> {
 
   @override
   Widget build(BuildContext context) {
-    log('LocalEmotions -> $emotions');
     return Column(
       children: [
         const Text(

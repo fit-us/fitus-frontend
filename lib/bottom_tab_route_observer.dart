@@ -22,7 +22,10 @@ class BottomTabRouteObserver extends RouteObserver<PageRoute<dynamic>> {
   @override
   void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) {
     super.didPop(route, previousRoute);
-    if (previousRoute != null) {
+    if (route.settings.name == '/record-select-moment' &&
+        previousRoute?.settings.name == '/') {
+      onShowBottomTab(true);
+    } else if (previousRoute != null) {
       _updateBottomTabVisibility(previousRoute);
     }
   }
@@ -40,7 +43,8 @@ class BottomTabRouteObserver extends RouteObserver<PageRoute<dynamic>> {
       final routeName = route.settings.name;
       final hideBottomTab =
           routeName != null && routesWithoutBottomTab.contains(routeName);
-      onShowBottomTab(!hideBottomTab);
+      final show = !hideBottomTab;
+      onShowBottomTab(show);
     }
   }
 }

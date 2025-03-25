@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:fapp/app_state.dart';
 import 'package:fapp/bottom_tab_route_observer.dart';
 import 'package:fapp/record/components/moment/record_moment_header.dart';
+import 'package:fapp/record/components/record_app_bar_android.dart';
 import 'package:fapp/record/components/record_app_bar_ios.dart';
 import 'package:fapp/record/components/record_next_button.dart';
 import 'package:fapp/record/components/moment/record_moment_select_box.dart';
@@ -141,7 +142,7 @@ class _RecordSelectMomentState extends State<RecordSelectMoment>
           ),
         )
         : Scaffold(
-          appBar: AppBar(title: const Text("")),
+          appBar: const RecordAppBarAndroid(),
           body: SafeArea(
             child: _buildContent(context, now, nowTimes, currentPalette),
           ),
