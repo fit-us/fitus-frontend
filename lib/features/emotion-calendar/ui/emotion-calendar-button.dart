@@ -1,51 +1,94 @@
-import 'package:fapp/pages/emotion-calendar-page.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:fapp/app_state.dart';
+import 'package:fapp/pages/emotion-calendar-page.dart';
 
 class EmotionCalendarButton extends StatelessWidget {
   const EmotionCalendarButton({super.key});
 
+  void _handleShowEmotionCalendar(BuildContext context) {
+    final appState = Provider.of<AppState>(context, listen: false);
+    appState.setBottomTabVisibility(false);
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder:
+          (modalContext) => Container(
+            height: MediaQuery.of(context).size.height * 0.87,
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(20),
+              ),
+            ),
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 12,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const SizedBox(width: 40),
+                      const Text(
+                        "감정 캘린더",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xff3E3A39),
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () => Navigator.pop(context),
+                        child: const SizedBox(
+                          width: 40,
+                          child: Text(
+                            '완료',
+                            textAlign: TextAlign.end,
+                            style: TextStyle(
+                              color: Color(0xff8749EB),
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Expanded(child: EmotionCalendarPage()),
+              ],
+            ),
+          ),
+    ).then((_) {
+      appState.setBottomTabVisibility(true);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        Navigator.of(context).push(
-          PageRouteBuilder(
-            opaque: false,
-            barrierColor: Colors.transparent,
-            transitionDuration: Duration(milliseconds: 300),
-            pageBuilder:
-                (context, animation, secondaryAnimation) =>
-                    EmotionCalendarPage(),
-            transitionsBuilder: (
-              context,
-              animation,
-              secondaryAnimation,
-              child,
-            ) {
-              final offset = Tween<Offset>(
-                begin: const Offset(0, 1),
-                end: const Offset(0, 0),
-              ).animate(
-                CurvedAnimation(parent: animation, curve: Curves.easeOutCubic),
-              );
-              return SlideTransition(position: offset, child: child);
-            },
-          ),
-        );
-      },
+      onTap: () => {_handleShowEmotionCalendar(context)},
       child: Container(
-        margin: EdgeInsets.fromLTRB(20, 10, 20, 20),
-        padding: EdgeInsets.fromLTRB(0, 14, 0, 14),
+        margin: const EdgeInsets.fromLTRB(20, 10, 20, 20),
+        padding: const EdgeInsets.fromLTRB(0, 14, 0, 14),
         decoration: BoxDecoration(
-          color: Color(0xffDCDDDD),
+          color: const Color(0xffDCDDDD),
           borderRadius: BorderRadius.circular(12),
         ),
-
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.calendar_month, size: 16),
-            Text(
+            const Icon(Icons.calendar_month, size: 16),
+            const SizedBox(
+              width: 8,
+            ), // Added a small space between icon and text
+            const Text(
               "감정 캘린더",
               style: TextStyle(
                 color: Color(0xff3E3A39),

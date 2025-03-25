@@ -5,33 +5,45 @@ class EmotionCalendarNavTop extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Container(width: 40),
-        const Text(
-          "감정 캘린더",
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: Color(0xff3E3A39),
-          ),
+    return Container(
+      decoration: const BoxDecoration(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(40),
+          topRight: Radius.circular(40),
         ),
-        InkWell(
-          onTap: () => Navigator.pop(context),
-          child: SizedBox(
-            width: 40,
-            child: const Text(
-              '완료',
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const SizedBox(width: 40),
+            const Text(
+              "감정 캘린더",
               style: TextStyle(
-                color: Color(0xff8749EB),
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
+                color: Color(0xff3E3A39),
               ),
             ),
-          ),
+            InkWell(
+              onTap: () => Navigator.pop(context),
+              child: const SizedBox(
+                width: 40,
+                child: Text(
+                  '완료',
+                  textAlign: TextAlign.end,
+                  style: TextStyle(
+                    color: Color(0xff8749EB),
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }
