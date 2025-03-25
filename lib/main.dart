@@ -35,8 +35,11 @@ class MyApp extends StatelessWidget {
       title: 'Fitus',
       theme: ThemeData(primarySwatch: Colors.blue),
       debugShowCheckedModeBanner: false,
-      home: const Home(),
+      home: const BottomTab(),
       routes: {"/emotion-calendar": (context) => EmotionCalendarPage()},
+      onGenerateRoute: (settings) {
+        return null;
+      },
     );
   }
 }
@@ -52,12 +55,7 @@ class Home extends StatelessWidget {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(20),
-              // child: Center(child: BioDashboard(data: bioMockData)),
-            ),
-          ),
+          Expanded(child: Padding(padding: const EdgeInsets.all(20))),
           const SizedBox(height: 30),
         ],
       ),

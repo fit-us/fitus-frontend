@@ -1,8 +1,5 @@
 import 'dart:developer';
 import 'package:fapp/app_state.dart';
-import 'package:fapp/bottom_tab_route_observer.dart';
-import 'package:fapp/record/record_select_description.dart';
-import 'package:fapp/record/record_select_moment.dart';
 import 'package:fapp/screens/emotion_home.dart';
 import 'package:fapp/settings/setting_profile_container.dart';
 import 'package:flutter/material.dart';
@@ -45,11 +42,6 @@ class _BottomTabState extends State<BottomTab>
     },
   ];
 
-  final List<GlobalKey<NavigatorState>> _navigatorKeys = List.generate(
-    4,
-    (_) => GlobalKey<NavigatorState>(),
-  );
-
   @override
   void initState() {
     super.initState();
@@ -77,18 +69,16 @@ class _BottomTabState extends State<BottomTab>
         if (didPop) {
           return;
         }
-        final isFirstRouteInCurrentTab =
-            !await _navigatorKeys[_selectedIndex].currentState!.maybePop();
-        if (isFirstRouteInCurrentTab) {
+        if (_selectedIndex == 0) {
           log('앱 종료');
+        } else {
+          _tabController.animateTo(0);
         }
       },
       child: Consumer<AppState>(
         builder: (context, appState, child) {
           return Scaffold(
             resizeToAvoidBottomInset: true,
-            appBar: AppBar(title: const Text("")),
-            // AppState에 따라 바텀 탭바 표시 여부 결정
             bottomNavigationBar:
                 appState.showBottomTab
                     ? SizedBox(
@@ -133,42 +123,30 @@ class _BottomTabState extends State<BottomTab>
                   _tabController.animateTo(index);
                 });
               },
-              children: List.generate(tabData.length, (index) {
-                return Navigator(
-                  key: _navigatorKeys[index],
+              children: [
+                Navigator(
+                  key: const ValueKey('home_navigator'),
                   initialRoute: '/',
-                  // RouteObserver 등록
-                  observers: [Provider.of<BottomTabRouteObserver>(context)],
                   onGenerateRoute: (routeSettings) {
-                    WidgetBuilder builder;
-                    String routeName;
-                    switch (index) {
-                      case 0:
-                        builder = (context) => HomeScreen();
-                        routeName = '/';
-                        break;
-                      case 1:
-                        builder = (context) => const RecordSelectMoment();
-                        routeName = '/record-select-moment';
-                        break;
-                      case 2:
-                        builder = (context) => const RecordSelectDescription();
-                        routeName = '/record-select-description';
-                        break;
-                      case 3:
-                        builder = (context) => SettingProfileContainer();
-                        routeName = '/profile';
-                        break;
-                      default:
-                        throw Exception('Invalid index: $index');
-                    }
                     return MaterialPageRoute(
-                      builder: builder,
+                      builder: (context) => HomeScreen(),
                       settings: routeSettings,
                     );
                   },
-                );
-              }),
+                ),
+                const Center(child: Text('1')),
+                const Center(child: Text('2')),
+                Navigator(
+                  key: const ValueKey('profile_navigator'),
+                  initialRoute: '/profile',
+                  onGenerateRoute: (routeSettings) {
+                    return MaterialPageRoute(
+                      builder: (context) => SettingProfileContainer(),
+                      settings: routeSettings,
+                    );
+                  },
+                ),
+              ],
             ),
           );
         },
