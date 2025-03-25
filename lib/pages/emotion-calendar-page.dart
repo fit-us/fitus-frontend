@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:fapp/entities/emotion/models/emotion-types.dart';
 import 'package:fapp/features/emotion-calendar/ui/emotion-calendar-cell.dart';
-import 'package:fapp/features/emotion-calendar/ui/emotion-calendar-navtop.dart';
 import 'package:fapp/features/emotion-calendar/utils/weekday-util.dart';
 
 class EmotionCalendarPage extends StatefulWidget {
-  const EmotionCalendarPage({Key? key}) : super(key: key);
+  const EmotionCalendarPage({super.key});
 
   @override
   State<EmotionCalendarPage> createState() => _EmotionCalendarPageState();
@@ -28,98 +27,68 @@ class _EmotionCalendarPageState extends State<EmotionCalendarPage> {
   @override
   Widget build(BuildContext context) {
     return Material(
-      child: Align(
-        alignment: Alignment.topCenter,
-
-        child: Container(
-          height: MediaQuery.of(context).size.height * 0.95, // 위에 15% 여백
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-          ),
-          child: Container(
-            height: MediaQuery.of(context).size.height * 0.95,
-            padding: EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-            ),
-            child: SafeArea(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+      child: Container(
+        decoration: const BoxDecoration(color: Colors.white),
+        child: SafeArea(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children:
+                    WeekDayUtil.dayOfWeek
+                        .map((dayOfWeek) => Text(dayOfWeek))
+                        .toList(),
+              ),
+              const SizedBox(height: 12),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  EmotionCalendarNavTop(),
-                  SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children:
-                        WeekDayUtil.dayOfWeek
-                            .map((dayOfWeek) => Text(dayOfWeek))
-                            .toList(),
-                  ),
-
-                  SizedBox(height: 12),
-
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Container(
-                        margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                        child: Text(
-                          '${_focusedDay.month}월',
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-
-                  SizedBox(height: 8),
-
-                  Expanded(
-                    child: TableCalendar(
-                      focusedDay: _focusedDay,
-                      firstDay: DateTime.utc(2010, 10, 16),
-                      lastDay: DateTime.utc(2030, 3, 14),
-                      headerVisible: false,
-                      rowHeight: 94,
-                      daysOfWeekHeight: 0,
-                      calendarStyle: CalendarStyle(
-                        outsideDaysVisible: false,
-                        cellMargin: EdgeInsets.zero,
-                      ),
-                      onPageChanged: (day) => setState(() => _focusedDay = day),
-                      calendarBuilders: CalendarBuilders(
-                        defaultBuilder: (context, day, focusedDay) {
-                          return EmotionCalendarCell(
-                            day: day,
-                            emotion:
-                                emotionData[DateTime(
-                                  day.year,
-                                  day.month,
-                                  day.day,
-                                )],
-                          );
-                        },
-                        todayBuilder: (context, day, focusedDay) {
-                          return EmotionCalendarCell(
-                            day: day,
-                            emotion:
-                                emotionData[DateTime(
-                                  day.year,
-                                  day.month,
-                                  day.day,
-                                )],
-                          );
-                        },
+                  Container(
+                    margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                    child: Text(
+                      '${_focusedDay.month}월',
+                      style: const TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
                 ],
               ),
-            ),
+              const SizedBox(height: 8),
+              Expanded(
+                child: TableCalendar(
+                  focusedDay: _focusedDay,
+                  firstDay: DateTime.utc(2010, 10, 16),
+                  lastDay: DateTime.utc(2030, 3, 14),
+                  headerVisible: false,
+                  rowHeight: 94,
+                  daysOfWeekHeight: 0,
+                  calendarStyle: CalendarStyle(
+                    outsideDaysVisible: false,
+                    cellMargin: EdgeInsets.zero,
+                  ),
+                  onPageChanged: (day) => setState(() => _focusedDay = day),
+                  calendarBuilders: CalendarBuilders(
+                    defaultBuilder: (context, day, focusedDay) {
+                      return EmotionCalendarCell(
+                        day: day,
+                        emotion:
+                            emotionData[DateTime(day.year, day.month, day.day)],
+                      );
+                    },
+                    todayBuilder: (context, day, focusedDay) {
+                      return EmotionCalendarCell(
+                        day: day,
+                        emotion:
+                            emotionData[DateTime(day.year, day.month, day.day)],
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),
