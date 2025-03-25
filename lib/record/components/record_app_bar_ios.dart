@@ -1,7 +1,9 @@
+import 'package:fapp/app_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'dart:io';
 import 'package:fapp/screens/emotion_home.dart';
+import 'package:provider/provider.dart';
 
 class RecordAppBarIos extends StatelessWidget
     implements ObstructingPreferredSizeWidget {
@@ -32,11 +34,17 @@ class RecordAppBarIos extends StatelessWidget
         ),
       ),
       leading: CupertinoNavigationBarBackButton(
-        // Changed from CupertinoButton
-        onPressed: () => Navigator.of(context).pop(),
-        color:
-            CupertinoColors
-                .systemBlue, // Added color to match the original button
+        onPressed: () {
+          if (ModalRoute.of(context)?.settings.name ==
+              '/record-select-moment') {
+            Provider.of<AppState>(
+              context,
+              listen: false,
+            ).setBottomTabVisibility(true);
+          }
+          Navigator.of(context).pop();
+        },
+        color: CupertinoColors.systemBlue,
       ),
       trailing: CupertinoButton(
         padding: EdgeInsets.zero,
@@ -45,6 +53,10 @@ class RecordAppBarIos extends StatelessWidget
           style: TextStyle(fontSize: 16.0, color: CupertinoColors.systemBlue),
         ),
         onPressed: () {
+          Provider.of<AppState>(
+            context,
+            listen: false,
+          ).setBottomTabVisibility(true);
           Navigator.of(
             context,
           ).push(CupertinoPageRoute(builder: (context) => const HomeScreen()));

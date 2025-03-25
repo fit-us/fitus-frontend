@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'dart:io';
+import 'package:fapp/bottom_tab_route_observer.dart';
 import 'package:fapp/record/components/record_app_bar_android.dart';
 import 'package:fapp/record/components/record_app_bar_ios.dart';
 import 'package:fapp/record/components/record_expression_box.dart';
@@ -10,7 +11,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class EmotionExpressScreen extends StatefulWidget {
+class EmotionExpressScreen extends StatefulWidget with RouteAware {
   const EmotionExpressScreen({super.key, required this.emotionIndex});
 
   final int emotionIndex;
@@ -19,12 +20,38 @@ class EmotionExpressScreen extends StatefulWidget {
   State<EmotionExpressScreen> createState() => _EmotionExpressScreenState();
 }
 
-class _EmotionExpressScreenState extends State<EmotionExpressScreen> {
+class _EmotionExpressScreenState extends State<EmotionExpressScreen>
+    with RouteAware {
   List<String> selectedExpressions = [];
   String get emotionText => _getEmotionText(widget.emotionIndex);
 
   void setExpressions(List<String> expressions) {
     log("Setting expressions: $expressions");
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final routeObserver = Provider.of<BottomTabRouteObserver>(
+      context,
+      listen: false,
+    );
+    routeObserver.subscribe(this, ModalRoute.of(context) as PageRoute);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    final routeObserver = Provider.of<BottomTabRouteObserver>(
+      context,
+      listen: false,
+    );
+    routeObserver.unsubscribe(this);
+    super.dispose();
   }
 
   void handleNext() {
@@ -37,7 +64,10 @@ class _EmotionExpressScreenState extends State<EmotionExpressScreen> {
     });
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const RecordSelectDescription()),
+      MaterialPageRoute(
+        builder: (context) => const RecordSelectDescription(),
+        settings: const RouteSettings(name: '/record-select-description'),
+      ),
     );
   }
 
@@ -93,10 +123,7 @@ class _EmotionExpressScreenState extends State<EmotionExpressScreen> {
         ? CupertinoPageScaffold(
           resizeToAvoidBottomInset: true,
           navigationBar: RecordAppBarIos(title: ""),
-          child: Material(
-            // Wrap with Material on iOS
-            child: SafeArea(child: _buildContent(context)),
-          ),
+          child: Material(child: SafeArea(child: _buildContent(context))),
         )
         : Scaffold(
           appBar: const RecordAppBarAndroid(),

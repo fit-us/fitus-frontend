@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:fapp/bottom_tab_route_observer.dart';
 import 'package:fapp/record/components/emotion/record_emotion_background.dart';
 import 'package:fapp/record/components/emotion/record_emotion_header.dart';
 import 'package:fapp/record/components/emotion/record_emotion_image.dart';
@@ -24,7 +25,7 @@ class SelectEmotionScreen extends StatefulWidget {
 }
 
 class SelectEmotionScreenState extends State<SelectEmotionScreen>
-    with TickerProviderStateMixin {
+    with TickerProviderStateMixin, RouteAware {
   int _emotion = 0;
   int _prevEmotion = 0;
   late EmotionAnimations _animations;
@@ -39,7 +40,22 @@ class SelectEmotionScreenState extends State<SelectEmotionScreen>
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final routeObserver = Provider.of<BottomTabRouteObserver>(
+      context,
+      listen: false,
+    );
+    routeObserver.subscribe(this, ModalRoute.of(context) as PageRoute);
+  }
+
+  @override
   void dispose() {
+    final routeObserver = Provider.of<BottomTabRouteObserver>(
+      context,
+      listen: false,
+    );
+    routeObserver.unsubscribe(this);
     _animations.dispose();
     super.dispose();
   }
@@ -50,6 +66,7 @@ class SelectEmotionScreenState extends State<SelectEmotionScreen>
       context,
       MaterialPageRoute(
         builder: (context) => EmotionExpressScreen(emotionIndex: _emotion),
+        settings: const RouteSettings(name: '/record-select-moment'),
       ),
     );
   }
